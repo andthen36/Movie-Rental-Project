@@ -24,10 +24,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Table(name = "movie")
 public class Movie {
 	
-	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "movie", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Checkout> checkoutList = new ArrayList<Checkout>();
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")

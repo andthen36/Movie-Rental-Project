@@ -54,11 +54,19 @@ th, td {
 			<td>${eachMovie.rating}</td>
 			<td>${eachMovie.totalCopies}</td>
 			<td>${eachMovie.availableCopies}</td>
-			<td><form action="rentMovie" modelAttribute = "checkout" method="post">
-					<input type="hidden" name="customerId" value="${customerId}"/>
+			
+			<td>
+			<c:choose>
+			<c:when test="${eachMovie.availableCopies >=1}">
+			<form action="rentMovie" modelAttribute = "checkout" method="post">
 					<input type="hidden" name="movieId" value="${eachMovie.id}"/>
+					<input type="hidden" name="customerId" value="${customerId}"/>
 					<input type="submit" value="Rent Movie"/> 
-				</form><td>
+				
+			</form>
+			</c:when>
+			</c:choose>
+			<td>
 			
 		</tr>
 	</c:forEach>

@@ -1,10 +1,9 @@
 package edu.wccnet.emeyer.springMVC.controller;
 
 import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,8 +25,15 @@ import edu.wccnet.emeyer.springMVC.entity.Customer;
 import edu.wccnet.emeyer.springMVC.entity.Movie;
 import edu.wccnet.emeyer.springMVC.entity.MoviePop;
 
+
 @Controller
 public class MainController {
+	
+	private Checkout checkout;
+	
+	private Movie movie;
+	
+	private Customer customer;
 	
 	@Autowired
 	private MoviePop moviePop;
@@ -63,10 +69,30 @@ public class MainController {
 	}
 	
 	@PostMapping("/rentMovie")
-	public String rentMovies(@ModelAttribute("checkout")Checkout newCheckout, @RequestParam("customerId") int customerId, @RequestParam("movieId") int movieId) {
-		System.out.println(newCheckout);
+	public String addCheckout(Model model,@RequestParam("customerId") int customerId, @RequestParam("movieId") int movieId) {
+		System.out.println("customerId = " + customerId + "Movie ID = " + movieId);
+		Checkout newCheckout = new Checkout(customerService.getCustomer(customerId),movieService.getMovie(movieId), LocalDateTime.now(), null);
 		checkoutService.saveCheckout(newCheckout);
-		return "redirect:/customer";
+		Movie newMovie = new Movie();
+		newMovie = movieService.rentMovie(movieId);
+		newMovie.setAvailableCopies(newMovie.getAvailableCopies()-1);
+		movieService.saveMovie(newMovie);
+		return "customer";
+		
+	}
+	
+	@PostMapping("/returnMovie")
+	public String returnMovie(Model model,@RequestParam("checkoutId") int id, @RequestParam("movieId") int movieId, @RequestParam("customerId") int customerId) {
+		Checkout newCheckout = new Checkout();
+		newCheckout = checkoutService.returnCheckout(id);
+		newCheckout.setReturnDate(LocalDateTime.now());
+		checkoutService.saveCheckout(newCheckout);
+		Movie newMovie = new Movie();
+		newMovie = movieService.rentMovie(movieId);
+		newMovie.setAvailableCopies(newMovie.getAvailableCopies()+1);
+		movieService.saveMovie(newMovie);
+		return "login";
+		
 	}
 	
 	@PostMapping("/search")
@@ -76,9 +102,10 @@ public class MainController {
 	}
 	
 	@PostMapping("/searchMovie")
-	public String searchMovie(@RequestParam("seachString")String searchString) {
+	public String searchMovie(Model model, @ModelAttribute("seachString")String searchString) {
+		model.addAttribute("movies",movieService.getMovies());
 		movieService.searchMovie(searchString);
-		return "searchList";
+		return "list-movies";
 	}
 	
 	@GetMapping("/newMovie")
@@ -97,13 +124,15 @@ public class MainController {
 	
 	@PostMapping("/loginCustomer")
 	public String loginCustomer(Model model, @RequestParam("customerId") int id) {
-		model.addAttribute("movies", movieService.getMovie(id));
+		//model.addAttribute("movies", movieService.getMovie(id));
+		model.addAttribute("checkouts", checkoutService.getCheckouts(id));
 		Customer customer = customerService.getCustomer(id);
 		model.addAttribute("customerName", customer.getName());
 		model.addAttribute("customerId", customer.getId());
+		System.out.println(checkoutService.getCheckouts(id).size());
 		return "customer";
-		
 	}
+	
 	@ModelAttribute
 	public void populateFormWithData(Model model) {
 		model.addAttribute("ratingList", moviePop.populateRating());

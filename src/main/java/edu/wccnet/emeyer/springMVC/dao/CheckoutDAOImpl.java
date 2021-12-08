@@ -22,10 +22,11 @@ public class CheckoutDAOImpl implements CheckoutDAO {
 	private SessionFactory sessionFactory;
 	
 	@Override
-	public List<Checkout> getCheckouts() {
+	public List<Checkout> getCheckouts(int id) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Checkout> query = session.createQuery("from Checkout", 
+		Query<Checkout> query = session.createQuery("from Checkout where customerId = :customerId", 
 				Checkout.class);
+		query.setParameter("customerId", id);
 		return query.getResultList();
 	}
 
@@ -40,15 +41,20 @@ public class CheckoutDAOImpl implements CheckoutDAO {
 	public Checkout getCheckout(int id) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		session.get(Checkout.class, id);
-		return null;
+		Query<Checkout> query = session.createQuery("from Checkout where customerId = :customerId", 
+				Checkout.class);
+		query.setParameter("customerId", id);
+		return query.getSingleResult();
 	}
+	
 	@Override
-	public void deleteCheckout(int id) {
+	public Checkout returnCheckout(int id) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		Checkout checkout = session.get(Checkout.class, id);
-		session.remove(checkout);
+		Query<Checkout> query = session.createQuery("from Checkout where id = :id", 
+				Checkout.class);
+		query.setParameter("id", id);
+		return query.getSingleResult();
 	}
 
 }

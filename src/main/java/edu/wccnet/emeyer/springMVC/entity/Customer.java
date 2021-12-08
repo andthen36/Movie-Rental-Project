@@ -2,6 +2,7 @@ package edu.wccnet.emeyer.springMVC.entity;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 
 import javax.persistence.Column;
@@ -28,9 +29,14 @@ public class Customer {
 	@Column(name = "id")
 	private int id;
 	
-	@JsonManagedReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Checkout> checkoutList = new ArrayList<Checkout>();
+	
+	public void addCustomerCheckout(Checkout newCheckout) {
+		checkoutList.add(newCheckout);
+		newCheckout.setCustomer(this);
+	}
 	
 	public Customer(int id, List<Checkout> checkoutList, String name) {
 		super();

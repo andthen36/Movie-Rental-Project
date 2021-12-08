@@ -84,11 +84,11 @@ public class Checkout {
 		this.returnDate = returnDate;
 	}
 
-	@Override
-	public String toString() {
-		return "Checkout [id=" + id + ", customer=" + customer + ", movie=" + movie + ", outDate=" + outDate
-				+ ", returnDate=" + returnDate + "]";
-	}
+
+//	public String toString() {
+//		return "Checkout [id=" + id + ", customer=" + customer + ", movie=" + movie + ", outDate=" + outDate
+//				+ ", returnDate=" + returnDate + "]";
+//	}
 
 	public Movie getMovie() {
 		return movie;
@@ -96,6 +96,10 @@ public class Checkout {
 
 	public void setMovie(Movie movie) {
 		this.movie = movie;
+	}
+	
+	public Checkout() {
+		
 	}
 
 	

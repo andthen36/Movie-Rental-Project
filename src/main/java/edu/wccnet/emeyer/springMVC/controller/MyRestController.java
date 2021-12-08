@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.wccnet.emeyer.springMVC.Service.MovieService;
 import edu.wccnet.emeyer.springMVC.Service.CheckoutService;
+import edu.wccnet.emeyer.springMVC.entity.Checkout;
 import edu.wccnet.emeyer.springMVC.entity.Customer;
 import edu.wccnet.emeyer.springMVC.entity.Movie;
 
@@ -56,6 +57,11 @@ public class MyRestController {
 	@GetMapping("movies/{title}")
 	public Movie getMovie(@PathVariable String title) {
 		return movieService.getMovie(title);
+	}
+	
+	@GetMapping("checkout/{id}")
+	public List<Checkout> getCheckout(@PathVariable int id) {
+		return checkoutService.getCheckouts(id);
 	}
 	
 	

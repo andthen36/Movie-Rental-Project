@@ -25,6 +25,17 @@ public class MovieDAOImpl implements MovieDAO {
 				Movie.class);
 		return query.getResultList();
 	}
+	
+
+	@Override
+	public Movie rentMovie(int movieId) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Movie> query = session.createQuery("from Movie where id = :id", 
+				Movie.class);
+		query.setParameter("id", movieId);
+		return query.getSingleResult();
+	}
+	
 
 	@Override
 	public void saveMovie(Movie newMovie) {
@@ -45,9 +56,9 @@ public class MovieDAOImpl implements MovieDAO {
 	public Movie getMovie(String title) {
 		// TODO Auto-generated method stub
 		Session session = sessionFactory.getCurrentSession();
-		Query<Movie> query = session.createQuery("from Movie where title like :movie_title", 
+		Query<Movie> query = session.createQuery("from Movie where movie_title like ?movie_title", 
 				Movie.class);
-		query.setParameter("movie_title", title);
+		query.setParameter("movie_title", "%"+title+"%");
 		return query.getSingleResult();
 	
 	}
@@ -62,12 +73,12 @@ public class MovieDAOImpl implements MovieDAO {
 	}
 
 	@Override
-	public Movie seachMovie(String searchString) {
+	public List<Movie> seachMovie(String searchString) {
 		Session session = sessionFactory.getCurrentSession();
-		Query<Movie> query = session.createQuery("from Movie where searchString = :movie_title", 
+		Query<Movie> query = session.createQuery("from Movie where movie_title = :movie_title", 
 				Movie.class);
 		query.setParameter("movie_title", searchString);
-		return query.getSingleResult();
+		return query.getResultList();
 	
 	}
 	

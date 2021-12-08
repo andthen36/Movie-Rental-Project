@@ -24,9 +24,9 @@ public class CheckoutServiceImp implements CheckoutService {
 	
 	@Override
 	@Transactional
-	public List<Checkout> getCheckouts() {
+	public List<Checkout> getCheckouts(int id) {
 		// TODO Auto-generated method stub
-		return checkoutDAO.getCheckouts();
+		return checkoutDAO.getCheckouts(id);
 	}
 
 	@Override
@@ -46,9 +46,9 @@ public class CheckoutServiceImp implements CheckoutService {
 
 	@Override
 	@Transactional
-	public void deleteCheckout(int id) {
+	public Checkout returnCheckout(int id) {
 		// TODO Auto-generated method stub
-		checkoutDAO.deleteCheckout(id);
+		return checkoutDAO.returnCheckout(id);
 	}
 
 	

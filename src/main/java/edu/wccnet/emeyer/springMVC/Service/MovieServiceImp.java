@@ -21,6 +21,12 @@ public class MovieServiceImp implements MovieService {
 		// TODO Auto-generated method stub
 		return movieDAO.getMovies();
 	}
+	
+	@Transactional
+	public Movie rentMovie(int movieId) {
+		// TODO Auto-generated method stub
+		return movieDAO.rentMovie(movieId);
+	}
 
 	@Transactional
 	public void saveMovie(Movie newMovie) {
@@ -42,9 +48,9 @@ public class MovieServiceImp implements MovieService {
 	}
 	
 	@Transactional
-	public Movie searchMovie(String searchStrign) {
+	public List<Movie> searchMovie(String searchString) {
 		// TODO Auto-generated method stub
-		return movieDAO.getMovie(searchStrign);
+		return movieDAO.seachMovie(searchString);
 	}
 
 

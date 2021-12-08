@@ -33,21 +33,23 @@ th, td {
 					</tr>
 		
 	<c:forEach var="eachCheckout" items="${checkouts}">
-					<c:forEach var="eachMovie" items="${movies}">
+					
 						<tr>
 							<td>${eachCheckout.id}</td>
-							<td>${eachMovie.title}</td>
-							<td>${eachCheckout.checkoutDate}</td>
+							<td>${eachCheckout.movie.title}</td>
+							<td>${eachCheckout.outDate}</td>
 							<td>${eachCheckout.returnDate}</td>
 							<td>
 					<form action="returnMovie" method="post">
 						<input type="hidden" name="checkoutId" value = "${eachCheckout.id}"/>
+						<input type="hidden" name="movieId" value = "${eachCheckout.movie.id}"/>
+						<input type="hidden" name="customerId" value = "${customerId}"/>
 						<input type="submit" value="Return Movie">
 					</form>
 					</td>
 						</tr>
 					</c:forEach>
-					</c:forEach>
+
 				</table>
 				<br>
 				
